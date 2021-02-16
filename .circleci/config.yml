@@ -44,3 +44,8 @@ jobs:
 
       - store_artifacts:
           path: ~/repo/out/make
+workflows:
+  build-and-deploy:
+    jobs:
+      - build-windows
+      - build-linux
