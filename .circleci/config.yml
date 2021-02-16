@@ -10,6 +10,9 @@ jobs:
           name: Install libsecret
           command: "sudo apt-get install libsecret-1-dev"
       - run:
+          name: Install RPM
+          command: "sudo apt install rpm"
+      - run:
           name: Update NPM
           command: "sudo npm install -g npm"
       - restore_cache:
