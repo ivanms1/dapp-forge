@@ -6,11 +6,11 @@ orbs:
 jobs:
   build-windows:
     executor:
-      name: win/vs2019
-      shell: bash.exe
+      name: win/default
+      size: "medium"
     steps:
       - checkout
-      - run: echo 'Do something'
+      - run: Write-Host 'Hello, Windows'
   build-linux:
     working_directory: ~/repo
     docker:
