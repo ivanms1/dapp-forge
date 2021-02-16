@@ -3,12 +3,12 @@ jobs:
   build:
     working_directory: ~/repo
     docker:
-      - image: circleci/node:11
+      - image: circleci/node:15
     steps:
       - checkout
       - run:
           name: Update YARN
-          command: 'sudo npm install -g yarn'
+          command: "sudo npm install -g yarn"
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
