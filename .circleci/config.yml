@@ -7,6 +7,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install libsecret
+          command: "sudo apt-get install libsecret-1-dev"
+      - run:
           name: Update NPM
           command: "sudo npm install -g npm"
       - restore_cache:
