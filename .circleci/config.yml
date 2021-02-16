@@ -5,6 +5,7 @@ orbs:
 
 jobs:
   build-windows:
+    working_directory: ~/repo
     executor:
       name: win/default
       size: "medium"
