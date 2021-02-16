@@ -48,16 +48,15 @@ jobs:
           command: |
             sudo apt-get update -y
             sudo apt-get install -y dpkg fakeroot
-  - save_cache:
-      key: dependency-cache-{{ checksum "package.json" }}
-      paths:
-        - ./node_modules
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
       - run:
           name: Generate Builds
           command: yarn make
-
-  - store_artifacts:
-      path: ~/repo/out/make
+      - store_artifacts:
+          path: ~/repo/out/make
 workflows:
   build-and-deploy:
     jobs:
