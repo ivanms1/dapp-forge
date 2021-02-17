@@ -46,6 +46,9 @@ jobs:
           args: -h
       - run: |
           choco install wixtoolset
+          ls
+          $env:candle += "C:\ProgramData\WiX Toolset v3.11\bin"
+          $env:light += "C:\ProgramData\WiX Toolset v3.11\bin"
           yarn install
           yarn make
       - name: Upload Executable
