@@ -1,6 +1,6 @@
 name: Build Executables
 
-on: push
+on: [push]
 
 jobs:
   linux:
