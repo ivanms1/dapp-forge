@@ -68,5 +68,5 @@ jobs:
       - name: Upload Executable
         uses: actions/upload-artifact@v2
         with:
-          name: win-exec
+          name: mac-exec
           path: out/make/
