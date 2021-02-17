@@ -2,7 +2,7 @@ name: Build Executables
 
 on:
   push:
-    branches: main
+    branches: feat/test-github-actions
 
 jobs:
   linux:
