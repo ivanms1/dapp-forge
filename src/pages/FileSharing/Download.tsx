@@ -6,14 +6,15 @@ import {
   Stack,
   Text,
   Link,
-  Image,
   useToast,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { ipcRenderer } from "electron";
 import { useMutation } from "react-query";
 
-import close from "../../assets/icons/close.svg";
+import Icon from "../../components/Chakra/Icon";
+
+import { ReactComponent as Close } from "../../assets/icons/close.svg";
 
 const downloadFile = async (hash: string) => {
   const data = await ipcRenderer.invoke("download-file", hash);
@@ -86,7 +87,7 @@ function Download({ onClose }: DownloadProps) {
           right="2%"
           size="sm"
         >
-          <Image src={close} alt="close" width={25} />
+          <Icon icon={Close} width={25} />
         </Button>
         <Text fontSize="1.8rem" color="white" textAlign="center">
           Download files

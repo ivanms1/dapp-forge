@@ -8,14 +8,14 @@ import {
   Stack,
   Text,
   useToast,
-  Image,
 } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import Dropzone from "../../components/DropFile";
 import UploadedFile from "./UploadedFile";
+import Icon from "../../components/Chakra/Icon";
 
-import close from "../../assets/icons/close.svg";
+import { ReactComponent as Close } from "../../assets/icons/close.svg";
 
 // import styles from './Home.module.css';
 
@@ -80,7 +80,7 @@ function Upload({ onClose }: UploadProps) {
           right="2%"
           size="sm"
         >
-          <Image src={close} alt="close" width={25} />
+          <Icon icon={Close} width={25} />
         </Button>
         <Text fontSize="1.8rem" color="white" textAlign="center">
           Upload your files

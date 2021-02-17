@@ -1,6 +1,7 @@
 import { AnimatePresence } from "framer-motion";
 import React from "react";
 import { Switch, useLocation } from "react-router-dom";
+import { hot } from "react-hot-loader";
 
 import { AppProvider } from "./components/AppContext";
 import Layout from "./components/Layout";
@@ -20,7 +21,7 @@ import QrCodeImport from "./pages/IntroSteps/Wallet/QrCodeImport";
 import WalletOptions from "./pages/IntroSteps/Wallet/WalletOptions";
 import Wallet from "./pages/Wallet";
 
-export default function App() {
+function App() {
   const location = useLocation();
   return (
     <AppProvider>
@@ -69,3 +70,5 @@ export default function App() {
     </AppProvider>
   );
 }
+
+export default hot(module)(App);

@@ -45,7 +45,7 @@ function render() {
         <Router>
           <App />
         </Router>
-      </ChakraProvider>{" "}
+      </ChakraProvider>
     </QueryClientProvider>,
     document.getElementById("root")
   );
