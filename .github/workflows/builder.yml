@@ -3,30 +3,30 @@ name: Build Executables
 on: [push]
 
 jobs:
-  linux:
-    runs-on: ubuntu-latest
+  # linux:
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [15.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [15.x]
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 15.x
-      - run: |
-          sudo apt-get update -y
-          sudo apt-get install -y dpkg fakeroot
-          sudo apt-get install libsecret-1-dev
-          yarn install
-          yarn make
-      - name: Upload Executable
-        uses: actions/upload-artifact@v2
-        with:
-          name: linux-exec
-          path: out/make/
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Setup node
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: 15.x
+  #     - run: |
+  #         sudo apt-get update -y
+  #         sudo apt-get install -y dpkg fakeroot
+  #         sudo apt-get install libsecret-1-dev
+  #         yarn install
+  #         yarn make
+  #     - name: Upload Executable
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: linux-exec
+  #         path: out/make/
   win:
     runs-on: windows-latest
 
@@ -40,7 +40,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 15.x
+      - name: Choco help
+        uses: crazy-max/ghaction-chocolatey@v1
       - run: |
+          choco install wixtoolset
           yarn install
           yarn make
       - name: Upload Executable
@@ -49,24 +52,24 @@ jobs:
           name: win-exec
           path: out/make/
 
-  mac:
-    runs-on: macos-latest
+  # mac:
+  #   runs-on: macos-latest
 
-    strategy:
-      matrix:
-        node-version: [15.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [15.x]
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 15.x
-      - run: |
-          yarn install
-          yarn make
-      - name: Upload Executable
-        uses: actions/upload-artifact@v2
-        with:
-          name: mac-exec
-          path: out/make/
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Setup node
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: 15.x
+  #     - run: |
+  #         yarn install
+  #         yarn make
+  #     - name: Upload Executable
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: mac-exec
+  #         path: out/make/
