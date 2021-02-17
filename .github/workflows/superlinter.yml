@@ -1,0 +1,29 @@
+name: Build Executables
+
+on: [push]
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: 15.x
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 15.x
+      - run: |
+          sudo apt-get update -y
+          sudo apt-get install -y dpkg fakeroot
+          sudo apt-get install libsecret-1-dev
+          yarn install
+          yarn make
+      - name: Upload Executable
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: out/make
