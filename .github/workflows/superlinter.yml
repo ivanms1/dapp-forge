@@ -49,7 +49,7 @@ jobs:
           name: win-exec
           path: out/make/
 
-    mac:
+  mac:
     runs-on: macos-latest
 
     strategy:
