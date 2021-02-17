@@ -21,7 +21,6 @@ function useCurrentUser() {
     setLoading(true);
     const user = await ipcRenderer.invoke("get-profile");
     setLoading(false);
-    console.log(user);
     setCurrentUser({
       ...user,
       givenName: user.given_name,
