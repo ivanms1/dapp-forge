@@ -49,13 +49,21 @@ jobs:
           ls
           $env:candle += ";C:\ProgramData\WiX Toolset v3.11\bin"
           $env:light += ";C:\ProgramData\WiX Toolset v3.11\bin"
-          yarn install
-          yarn make
-      - name: Upload Executable
-        uses: actions/upload-artifact@v2
-        with:
-          name: win-exec
-          path: out/make/
+          cd ..
+          ls
+          cd ..
+          ls
+          cd ..
+          ls
+          cd ..
+          ls
+      #     yarn install
+      #     yarn make
+      # - name: Upload Executable
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: win-exec
+      #     path: out/make/
 
   # mac:
   #   runs-on: macos-latest
