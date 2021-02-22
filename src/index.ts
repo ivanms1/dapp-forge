@@ -1,32 +1,28 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import { generateApiPrivateKey } from "./services/api-services";
+import fs from "fs";
+import IPFS from "ipfs-core";
+import Protector from "libp2p/src/pnet";
+
 import {
   getAuthenticationURL,
   getLogOutUrl,
-  getProfile,
   loadTokens,
   logout,
   refreshTokens,
 } from "./services/auth-service";
-import signGenerator from "./services/sign-generator";
-import {
-  createWallet,
-  saveKeyStoreJson,
-  createQrCode,
-  saveQrCode,
-  validateKeystoreFile,
-  validateQrCode,
-  validatePrivateKey,
-  getEthBalance,
-  getConunBalance,
-  estimateGas,
-  transferEth,
-  transferCon,
-} from "./services/wallet-services";
+
+import "./ipcMain/wallet";
+import "./ipcMain/account";
+import "./ipcMain/ipfs";
+
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
 let mainWindow: BrowserWindow | null = null;
 let authWindow: BrowserWindow | null = null;
+export let node: any;
+
+const BOOTSTRAP_ADDRESSS =
+  "/ip4/15.164.229.6/tcp/4001/ipfs/12D3KooWNubmXubMPzPY9B69HLAEpoRBS41MchdGCa9SgJtd5LnT";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -53,9 +49,26 @@ const createWindow = (): void => {
     mainWindow.webContents.openDevTools();
   }
 
-  mainWindow.webContents.on("did-finish-load", () => {
+  mainWindow.webContents.on("did-finish-load", async () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
+    }
+
+    try {
+      node = await IPFS.create({
+        libp2p: {
+          modules: {
+            connProtector: new Protector(
+              fs.readFileSync("./src/assets/swarm.key")
+            ),
+          },
+        },
+        config: {
+          Bootstrap: [BOOTSTRAP_ADDRESSS],
+        },
+      });
+    } catch (error) {
+      console.log(error);
     }
 
     if (process.env.START_MINIMIZED) {
@@ -154,137 +167,5 @@ ipcMain.handle("logout", async () => {
 
   if (mainWindow) {
     mainWindow.close();
-  }
-});
-
-ipcMain.handle("get-profile", () => {
-  return getProfile();
-});
-
-ipcMain.handle("create-wallet", async (_, args) => {
-  const data = await createWallet(args.password);
-  return data;
-});
-
-ipcMain.handle("export-key-store", async (_, args) => {
-  const res = await saveKeyStoreJson(args.keyStore);
-  return res;
-});
-
-ipcMain.handle("create-qr-code", async (_, args) => {
-  const res = await createQrCode(args);
-  return res;
-});
-
-ipcMain.handle("download-qr-code", async (_, args) => {
-  const res = await saveQrCode(args.qrCode);
-  return res;
-});
-
-ipcMain.handle("validate-keystore-file", async (_, args) => {
-  try {
-    const res = await validateKeystoreFile(args);
-    return res;
-  } catch (error) {
-    return {
-      success: false,
-    };
-  }
-});
-
-ipcMain.handle("validate-qr-code", async (_, args) => {
-  try {
-    const res = await validateQrCode(args);
-    return res;
-  } catch (error) {
-    return {
-      success: false,
-    };
-  }
-});
-
-ipcMain.handle("validate-private-key", async (_, args) => {
-  try {
-    const res = await validatePrivateKey(args);
-    return res;
-  } catch (error) {
-    return {
-      success: false,
-    };
-  }
-});
-
-ipcMain.handle("generate-api-private-key", async () => {
-  try {
-    const res = await generateApiPrivateKey();
-    return res;
-  } catch (error) {
-    return {
-      success: false,
-    };
-  }
-});
-
-ipcMain.handle("get-eth-balance", async (_, args) => {
-  try {
-    const res = await getEthBalance(args.address);
-    return res;
-  } catch (error) {
-    return {
-      success: false,
-    };
-  }
-});
-
-ipcMain.handle("get-con-balance", async (_, args) => {
-  try {
-    const res = await getConunBalance(args.address);
-    return res;
-  } catch (error) {
-    return {
-      success: false,
-    };
-  }
-});
-
-ipcMain.handle("get-gas-estimate", async (_, args) => {
-  try {
-    const res = await estimateGas(args);
-    return { ...res, success: true };
-  } catch (error) {
-    return {
-      success: false,
-      error,
-    };
-  }
-});
-
-ipcMain.handle("transfer", async (_, args) => {
-  try {
-    if (args.type === "ETH") {
-      const res = await transferEth(args);
-      return { ...res, success: true };
-    }
-
-    const res = await transferCon(args);
-    return { ...res, success: true };
-  } catch (error) {
-    return {
-      success: false,
-      error,
-    };
-  }
-});
-
-ipcMain.handle("generate-sign", async (_, args) => {
-  try {
-    const res = await signGenerator(args);
-
-    return res;
-  } catch (error) {
-    return {
-      success: false,
-      error,
-    };
   }
 });
